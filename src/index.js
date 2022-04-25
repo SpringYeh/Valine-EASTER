@@ -4,7 +4,6 @@ const marked = require('marked');
 const autosize = require('autosize');
 const timeAgo = require('./utils/timeago');
 const detect = require('./utils/detect');
-const urlencode = require('./utils/urlencode');
 const Utils = require('./utils/domUtils');
 // const Emoji = require('./plugins/emojis');
 const hanabi = require('hanabi');
@@ -29,7 +28,7 @@ const bReg = new RegExp('\\~\\(\\s*(' + smiliesData.B站 + ')\\s*\\)')
 
 
 const defaultAvatarSwitch = true
-const defaultAvatarUrl = urlencode('https://cinzano.oss-cn-shanghai.aliyuncs.com/cdn/img/dava.png')
+const defaultAvatarUrl = 'https%3A%2F%2Fcinzano.oss-cn-shanghai.aliyuncs.com%2Fcdn%2Fimg%2Fdava.png'
 
 
 
@@ -177,9 +176,11 @@ ValineFactory.prototype._init = function () {
         root.locale = root.locale || locales[lang || 'zh-cn'];
         root.notify = notify || false;
         root.verify = verify || false;
-        _avatarSetting['params'] += `&d=${(ds.indexOf(avatar) > -1 ? avatar : 'mp')}&v=${VERSION}${force}`;
+        
         if(defaultAvatarSwitch){    //如果设置默认头像图片链接开关打开，则修改参数d
             _avatarSetting['params'] += `&d=${defaultAvatarUrl}&v=${VERSION}${force}`;
+        } else{
+            _avatarSetting['params'] += `&d=${(ds.indexOf(avatar) > -1 ? avatar : 'mp')}&v=${VERSION}${force}`;
         }
         _avatarSetting['hide'] = avatar === 'hide' ? true : false;
         _avatarSetting['cdn'] = /^https?\:\/\//.test(avatar_cdn) ? avatar_cdn : _avatarSetting['cdn']
