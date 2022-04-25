@@ -27,6 +27,7 @@ const mReg = new RegExp('\\^\\(\\s*(' + smiliesData.嗷大喵 + ')\\s*\\)')
 const bReg = new RegExp('\\~\\(\\s*(' + smiliesData.B站 + ')\\s*\\)')
 
 
+//图片链接URL需是encode后的格式
 const defaultAvatarSwitch = true
 const defaultAvatarUrl = 'https%3A%2F%2Fcinzano.oss-cn-shanghai.aliyuncs.com%2Fcdn%2Fimg%2Fdava.png'
 
