@@ -4,14 +4,11 @@ const marked = require('marked');
 const autosize = require('autosize');
 const timeAgo = require('./utils/timeago');
 const detect = require('./utils/detect');
-const urlencode = require('./utils/urlencode');
 const Utils = require('./utils/domUtils');
 // const Emoji = require('./plugins/emojis');
 const hanabi = require('hanabi');
 
-// const cdnprefix = 'https://cdn.jsdelivr.net/gh/springyeh/cdn@master/emoji/'
-const cdnprefix = '/img/emoji/'
-
+const cdnprefix = 'https://cdn.jsdelivr.net/gh/springyeh/cdn@master/emoji/'
 const smiliesData = {
     酷安: `歪嘴邪神|辣眼睛|妙啊|无语|颜艺|笑看吃瓜|心虚|s-1|s-2|s-3|s-4|s-5|s-6|s-7|s-8|s-9|s-10|s-13|s-14|s-15|s-16|s-17|s-18|s-19|s-20|s-25|s-26|s-27|s-28|s-29|s-30|s-31|s-32|s-33|s-34|s-35|s-36|s-37|s-38|s-39|s-40|s-41|s-42|s-43|s-67|s-45|s-46|s-47|s-48|s-49|s-50|s-51|s-52|s-53|s-54|s-55|s-56|s-57|s-58|s-59|s-60|s-61|s-62|s-63|s-64|s-65|s-66|s-44|s-68|s-69`,
     QQ: `微笑|撇嘴|色|发呆|得意|流泪|害羞|闭嘴|睡|敲打|咒骂|发抖|托腮|嗅大了|眨眼睛|鄙视|强|弱|握手|胜利|抱拳|勾引|拳头|差劲|爱你|NO|OK|心|奋斗|爆筋|青蛙|吐|挥动|激动|笑哭|酷|飞吻|吓|偷笑|尴尬|擦汗|转圈|哈欠|亲亲|晕|阴险|怄火|喷血|心碎|磕头|衰|左哼哼|惊讶|鞭炮|大哭|回头|委屈|傲慢|我最美|折磨|憨笑|菜刀|疑问|嘘|流汗|抠鼻|可怜|无奈|右哼哼|再见|惊喜|坏笑|饥饿|doge|骚扰|鼓掌|困|小纠结|街舞|灯|凋谢|蛋糕|猪头|可爱|调皮|难过|饭|惊恐|卖萌|拥抱|白眼|喝彩|玫瑰|泪奔|快哭了|斜眼笑|冷汗|抓狂|发怒`,
@@ -26,10 +23,6 @@ const pReg = new RegExp('\\@\\(\\s*(' + smiliesData.酷安 + ')\\s*\\)')
 const qReg = new RegExp('\\#\\(\\s*(' + smiliesData.QQ + ')\\s*\\)')
 const mReg = new RegExp('\\^\\(\\s*(' + smiliesData.嗷大喵 + ')\\s*\\)')
 const bReg = new RegExp('\\~\\(\\s*(' + smiliesData.B站 + ')\\s*\\)')
-
-
-const defaultAvatarSwitch = true
-const defaultAvatarUrl = urlencode('https://cinzano.oss-cn-shanghai.aliyuncs.com/cdn/img/dava.png')
 
 
 
@@ -122,10 +115,9 @@ const locales = {
 }
 
 let _avatarSetting = {
-    cdn: 'https://cravatar.cn/avatar/',
-    
+    cdn: 'https://sdn.geekzu.org/avatar/',
     ds: ['mp', 'identicon', 'monsterid', 'wavatar', 'robohash', 'retro', ''],
-    params: '?s=120',
+    params: '?s=80',
     hide: false
 },
     META = ['nick', 'mail', 'link'],
@@ -177,10 +169,7 @@ ValineFactory.prototype._init = function () {
         root.locale = root.locale || locales[lang || 'zh-cn'];
         root.notify = notify || false;
         root.verify = verify || false;
-        _avatarSetting['params'] += `&d=${(ds.indexOf(avatar) > -1 ? avatar : 'mp')}&v=${VERSION}${force}`;
-        if(defaultAvatarSwitch){    //如果设置默认头像图片链接开关打开，则修改参数d
-            _avatarSetting['params'] += `&d=${defaultAvatarUrl}&v=${VERSION}${force}`;
-        }
+        _avatarSetting['params'] = `?d=${(ds.indexOf(avatar) > -1 ? avatar : 'mp')}&v=${VERSION}${force}`;
         _avatarSetting['hide'] = avatar === 'hide' ? true : false;
         _avatarSetting['cdn'] = /^https?\:\/\//.test(avatar_cdn) ? avatar_cdn : _avatarSetting['cdn']
 
@@ -906,7 +895,7 @@ ValineFactory.prototype.bind = function (option) {
         let _nick = '';
         let _url = rt.get('link'), isauthor = 0;
         if (_url === "2436986") {
-            _url = "https://yezheng.fun";
+            _url = "https://cinzano.xyz";
             isauthor = 1;
         }
         let _t = _url ? (/^https?\:\/\//.test(_url) ? _url : 'http://' + _url) : '';
@@ -1005,7 +994,7 @@ ValineFactory.prototype.bind = function (option) {
                 defaultComment[k] = s[k];
             }
             // 获取头像 for cache
-            let email_avatar_src = _avatarSetting['cdn'] + md5(s['mail'] || s['nick']) + _avatarSetting['params'];
+            let email_avatar_src = _avatarSetting['cdn'] + md5(s['mail'] || s['nick']) + "?s=150&d=monsterid";
             if (s['mail'] === root.config.bz_email) {   //如果是博主的话，cache自定义头像
                 email_avatar_src = root.config.bz_img;
             }
