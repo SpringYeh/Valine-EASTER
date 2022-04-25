@@ -12,3 +12,4 @@ package-lock.json
 .npmignore
 .babelrc
 .gitattributes
+dist/
